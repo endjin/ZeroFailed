@@ -33,7 +33,7 @@ else {
     Write-Warning "No extensions specified"
 }
 
-# TODO: Valiate whether extension dependencies are non-conflicting
+# Valiate whether extension dependencies are non-conflicting
 # For the moment we'll just remove duplicate references, with no regard for versioning - first one wins
 if (($registeredExtensions | Group-Object -Property Name).Count -gt 1) {
     Write-Warning "Multiple versions of extension '$($_.Name)' have been specified - removing duplicates"
