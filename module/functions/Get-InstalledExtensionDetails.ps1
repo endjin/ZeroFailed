@@ -1,3 +1,6 @@
+# <copyright file="Get-InstalledExtensionDetails.ps1" company="Endjin Limited">
+# Copyright (c) Endjin Limited. All rights reserved.
+# </copyright>
 function Get-InstalledExtensionDetails {
     [CmdletBinding()]
     param (

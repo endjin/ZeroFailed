@@ -1,3 +1,6 @@
+# <copyright file="Register-Extensions.ps1" company="Endjin Limited">
+# Copyright (c) Endjin Limited. All rights reserved.
+# </copyright>
 function Register-Extensions {
     [CmdletBinding()]
     param (

@@ -1,3 +1,7 @@
+# <copyright file="import-tasks.ps1" company="Endjin Limited">
+# Copyright (c) Endjin Limited. All rights reserved.
+# </copyright>
+
 # Load core task definitions
 # TBC: What should constitute a core task?
 # NOTE: These are currently overridden when importing the original 'Endjin.RecommendedPractices.Build'

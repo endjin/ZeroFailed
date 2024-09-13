@@ -1,3 +1,6 @@
+# <copyright file="Import-FunctionsFromExtension.ps1" company="Endjin Limited">
+# Copyright (c) Endjin Limited. All rights reserved.
+# </copyright>
 function Import-FunctionsFromExtension {
     [CmdletBinding()]
     param (

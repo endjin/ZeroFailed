@@ -1,3 +1,6 @@
+# <copyright file="New-ExtensionMetadataItem.ps1" company="Endjin Limited">
+# Copyright (c) Endjin Limited. All rights reserved.
+# </copyright>
 function New-ExtensionMetadataItem {
     [CmdletBinding()]
     param (
