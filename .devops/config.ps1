@@ -6,24 +6,25 @@
 # Declare required extensions
 
 # Simple syntax where version constraints and/or custom process definition is not required
-# $devopsExtensions = @(
-#     "Endjin.RecommendedPractices.Build"
-#     "../../Endjin.RecommendedPractices.Build/module"
-# )
+$devopsExtensions = @(
+    "Endjin.RecommendedPractices.Build"
+    "endjin-devops-firecracker"     # this has a hard-code dependency on the above
+    # "../Endjin.RP.Build/module"
+)
 
 # Full syntax
-$devopsExtensions = @(
-    @{
-        # Use latest stable version of exisiting scripted build module
-        Name = "Endjin.RecommendedPractices.Build"
-        Process = "tasks/build.process.ps1"
-        Version = "1.5.10-beta0004"
-        PreRelease = $true
-        # Path = "<path-to-local-copy>"  # If Path is not specified, the module will be installed from the repository
-        # Repository = ""  # Allows the source repository to be overridden on a per extension basis
-    }
-    # TODO: Add support for obtaining extensions via Git?
-)
+# $devopsExtensions = @(
+#     @{
+#         # Use latest stable version of exisiting scripted build module
+#         Name = "Endjin.RecommendedPractices.Build"
+#         Process = "tasks/build.process.ps1"
+#         Version = "1.5.10-beta0004"
+#         PreRelease = $true
+#         # Path = "<path-to-local-copy>"  # If Path is not specified, the module will be installed from the repository
+#         # Repository = ""  # Allows the source repository to be overridden on a per extension basis
+#     }
+#     # TODO: Add support for obtaining extensions via Git?
+# )
 
 # Load the tasks and process
 . endjin-devops.tasks

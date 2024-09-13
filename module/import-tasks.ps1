@@ -26,11 +26,23 @@ $devopsExtensionsRepository ??= !$env:ENDJIN_DEVOPS_EXTENSIONS_PS_REPO ? "PSGall
 if ($devopsExtensions.Count -gt 0) {
     Write-Host "*** Registering Extensions..." -f Green
     $registeredExtensions = Register-Extensions -Extensions $devopsExtensions `
-                                            -DefaultRepository $devopsExtensionsRepository `
-                                            -Verbose:$VerbosePreference
+                                                -DefaultRepository $devopsExtensionsRepository `
+                                                -Verbose:$VerbosePreference
 }
 else {
     Write-Warning "No extensions specified"
+}
+
+# TODO: Valiate whether extension dependencies are non-conflicting
+# For the moment we'll just remove duplicate references, with no regard for versioning - first one wins
+if (($registeredExtensions | Group-Object -Property Name).Count -gt 1) {
+    Write-Warning "Multiple versions of extension '$($_.Name)' have been specified - removing duplicates"
+    $registeredExtensions = $registeredExtensions |
+                                Group-Object -Property Name |
+                                    ForEach-Object {
+                                        $_.Group |
+                                        Select-Object -First 1
+                                    }
 }
 
 #
