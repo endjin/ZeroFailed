@@ -19,7 +19,9 @@ $taskGroups | ForEach-Object {
 # of extensions can be specified in 2 ways:
 #  1) Defining the '$devopsExtensions' variable early in the calling script (i.e. before calling 'endjin-devops.tasks')
 #  2) Via the 'ENDJIN_DEVOPS_EXTENSIONS' environment variables, however note that the former method will take precedence over the environment variable
-[string[]]$devopsExtensions ??= $env:ENDJIN_DEVOPS_EXTENSIONS ? ($env:ENDJIN_DEVOPS_EXTENSIONS -split ";" | ForEach-Object { $_ }) : @()
+if ($null -eq $devopsExtensions) {
+    [string[]]$devopsExtensions = $env:ENDJIN_DEVOPS_EXTENSIONS ? ($env:ENDJIN_DEVOPS_EXTENSIONS -split ";" | ForEach-Object { $_ }) : @()
+}
 
 # By default, extensions are loaded from the PowerShell Gallery, but this can be overridden
 # in a similar fashion to the 'ENDJIN_DEVOPS_EXTENSIONS' property.
