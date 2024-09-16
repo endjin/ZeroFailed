@@ -32,8 +32,11 @@ function Get-ExtensionAvailableTasks {
         Where-Object { !$_.BaseName.StartsWith("_") } |
         ForEach-Object {
             Write-Verbose "Importing task '$($_.FullName)'"
-            $availableTasks += . $_
+            # This is probably a sign that we should have a different approach for enumerating the
+            # tasks in each extension, but for now we'll just suppress any errors that might occur
+            # when trying to dotsource the file.  For example, since this function is running in a
+            # module scope, certain values referenced in the task files may not be available.
+            $availableTasks += try { . $_ } catch {}
         }
-
     return $availableTasks
 }
