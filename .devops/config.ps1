@@ -8,7 +8,7 @@
 # Simple syntax where version constraints and/or custom process definition is not required
 # $devopsExtensions = @(
 #     "Endjin.RecommendedPractices.Build"
-#     "../Endjin.RP.Build/module"
+#     "<path-to-local-copy>"
 # )
 
 # Full syntax
