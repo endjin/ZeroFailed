@@ -60,6 +60,7 @@ function Get-ExtensionFromRepository {
     $psResourceArgs = @{
         Name = $Name
         PreRelease = $PreRelease
+        Verbose = $false
     }
     if ($Version) {
         $extension.Add("Version", $Version)
