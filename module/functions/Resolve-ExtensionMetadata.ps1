@@ -1,12 +1,14 @@
-# <copyright file="New-ExtensionMetadataItem.ps1" company="Endjin Limited">
+# <copyright file="Resolve-ExtensionMetadata.ps1" company="Endjin Limited">
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
-function New-ExtensionMetadataItem {
+function Resolve-ExtensionMetadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true)]
         $Value
     )
+
+    Write-Verbose "Unresolved extension metadata: $($Value | ConvertTo-Json)"
 
     if ($Value -is [string]) {
         $extension = @{}
@@ -16,10 +18,16 @@ function New-ExtensionMetadataItem {
         $regex = "{0}|{1}" -f [System.Text.RegularExpressions.Regex]::Escape([IO.Path]::DirectorySeparatorChar),
                               [IO.Path]::AltDirectorySeparatorChar
         if ($Value -imatch $regex) {
-            # Simple syntax referencing a file path to the module
+            # Handle the Simple syntax referencing a file path to the module
             $extension.Add("Path", $Value)
-            # Assume standard directory convention to derive the extension name
-            $extension.Add("Name", (Split-Path -Leaf (Split-Path -Parent $Value)))
+            # Locate the module manifest to derive the module name.  We need this name 
+            # to be accurate to ensure our duplicate extension detection works correctly.
+            $moduleManifestPaths = Get-ChildItem -Path $Value -Filter "*.psd1" | Where-Object { $_.BaseName -ne "dependencies" }
+            $moduleManifestPath = $moduleManifestPaths | Select-Object -First 1
+            if ($moduleManifestPath.Count -gt 1) {
+                Write-Warning "Found multiple module manifest files in '$Value' - using the first one found ($moduleManifestPath.BaseName)"
+            }
+            $extension.Add("Name", $moduleManifestPath.BaseName)
         }   
         else {
             # Simple syntax referencing a module name
@@ -34,6 +42,6 @@ function New-ExtensionMetadataItem {
         throw "Invalid extension configuration syntax. Expected a string or hashtable, but found $($Value.GetType().Name)"
     }
 
-    Write-Verbose "Extension metadata: $($extension | ConvertTo-Json)"
+    Write-Verbose "Resolved extension metadata: $($extension | ConvertTo-Json)"
     return $extension
 }

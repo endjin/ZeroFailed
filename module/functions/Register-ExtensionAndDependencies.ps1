@@ -26,7 +26,7 @@ function Register-ExtensionAndDependencies {
     This example registers an extension with the specified configuration.
     
     .NOTES
-    This function requires the New-ExtensionMetadataItem, Get-ExtensionFromRepository, Get-ExtensionDependencies, and Get-ExtensionAvailableTasks functions to be available in the current session.
+    This function requires the Resolve-ExtensionMetadata, Get-ExtensionFromRepository, Get-ExtensionDependencies, and Get-ExtensionAvailableTasks functions to be available in the current session.
     #>
     
     [CmdletBinding()]
@@ -38,7 +38,7 @@ function Register-ExtensionAndDependencies {
     [hashtable[]]$processedExtensionConfig = @()
 
     # Parse the extension configuration item into its canonical form
-    $extension = New-ExtensionMetadataItem -Value $ExtensionConfig -Verbose:$VerbosePreference
+    $extension = Resolve-ExtensionMetadata -Value $ExtensionConfig -Verbose:$VerbosePreference
 
     # Prepare the parameters needed for extension registration
     $splat = $extension.Clone()
