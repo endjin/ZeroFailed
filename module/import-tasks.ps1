@@ -40,16 +40,18 @@ else {
 }
 
 # Valiate whether extension dependencies are non-conflicting
-# For the moment we'll just remove duplicate references, with no regard for versioning - first one wins
-if (($registeredExtensions | Group-Object -Property Name).Count -gt 1) {
-    Write-Warning "Multiple versions of extension '$($_.Name)' have been specified - removing duplicates"
-    $registeredExtensions = $registeredExtensions |
-                                Group-Object -Property Name |
-                                    ForEach-Object {
-                                        $_.Group |
-                                        Select-Object -First 1
-                                    }
-}
+# For the moment we'll just log a warning and remove duplicate references, with no regard for versioning - first one wins
+($registeredExtensions | Group-Object -Property Name) |
+    Where-Object { $_.Count -gt 1 } |
+    ForEach-Object {
+        Write-Warning "Multiple versions of extension '$($_.Name)' have been resolved - removing duplicates, will use the first one found: $($_.Group[0] | ConvertTo-Json)"
+    }
+$registeredExtensions = $registeredExtensions |
+                            Group-Object -Property Name |
+                                ForEach-Object {
+                                    $_.Group |
+                                    Select-Object -First 1
+                                }
 
 #
 # Load the process definition

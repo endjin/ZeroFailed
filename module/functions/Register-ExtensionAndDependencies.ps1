@@ -63,7 +63,9 @@ function Register-ExtensionAndDependencies {
     
     # If enabled, interrogate the extension for its dependencies and exported tasks? recursive?
     if ($extension.Enabled) {
+        Write-Verbose "Checking dependencies for $($extension.Name)"
         $extension.Add("dependencies", (Get-ExtensionDependencies -Extension $extension))
+        Write-Verbose "Checking available tasks for $($extension.Name)"
         $extension.Add("availableTasks", (Get-ExtensionAvailableTasks -Extension $extension))
     }
 
@@ -72,7 +74,7 @@ function Register-ExtensionAndDependencies {
     # If enabled, resolve any dependencies for this extension
     if ($extension.Enabled) {
         foreach ($dependency in $extension.dependencies) {
-            Write-Host "Processing dependency: $dependency"
+            Write-Host "Processing dependency: $($dependency.Name)"
             $processedExtensionConfig += Register-ExtensionAndDependencies -ExtensionConfig $dependency
         }
     }
