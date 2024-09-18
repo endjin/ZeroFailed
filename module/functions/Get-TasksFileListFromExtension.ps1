@@ -1,7 +1,7 @@
-# <copyright file="Import-TasksFromExtension.ps1" company="Endjin Limited">
+# <copyright file="Get-TasksFileListFromExtension.ps1" company="Endjin Limited">
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
-function Import-TasksFromExtension {
+function Get-TasksFileListFromExtension {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true)]

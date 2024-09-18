@@ -100,7 +100,7 @@ foreach ($extension in $registeredExtensions) {
     # Import tasks
     Write-Host "- Importing tasks"
     $tasksDir = Join-Path $extension.Path "tasks"
-    $tasksToImport = Import-TasksFromExtension -TasksPath $tasksDir
+    $tasksToImport = Get-TasksFileListFromExtension -TasksPath $tasksDir
     if (!($tasksToImport)) {
         Write-Warning "No tasks found in '$extensionName'"
     }
@@ -114,7 +114,7 @@ foreach ($extension in $registeredExtensions) {
     # Import functions
     Write-Host "- Importing functions"
     $functionsDir = Join-Path $extension.Path "functions"
-    $functionsToImport = Import-FunctionsFromExtension -FunctionsPath $functionsDir
+    $functionsToImport = Get-FunctionsFileListFromExtension -FunctionsPath $functionsDir
     $functionsToImport | ForEach-Object {
         Write-Verbose "Importing function '$($_.FullName)'"
         . $_

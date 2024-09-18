@@ -1,7 +1,7 @@
-# <copyright file="Import-FunctionsFromExtension.ps1" company="Endjin Limited">
+# <copyright file="Get-FunctionsFileListFromExtension.ps1" company="Endjin Limited">
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
-function Import-FunctionsFromExtension {
+function Get-FunctionsFileListFromExtension {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true)]

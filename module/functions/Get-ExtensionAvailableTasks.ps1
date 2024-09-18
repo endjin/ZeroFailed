@@ -25,7 +25,7 @@ function Get-ExtensionAvailableTasks {
     }
 
     $tasksDir = Join-Path $Extension.Path "tasks"
-    $tasksToImport = Import-TasksFromExtension -TasksPath $tasksDir
+    $tasksToImport = Get-TasksFileListFromExtension -TasksPath $tasksDir
     $availableTasks = @()
     $tasksToImport |
         # Treat tasks with a '_' prefix as private and exclude them
