@@ -3,30 +3,28 @@
 # </copyright>
 function Register-ExtensionAndDependencies {
     <#
-    .SYNOPSIS
-    Registers an extension and its dependencies.
-    
-    .DESCRIPTION
-    A recursive function responsible for registering the specified extension and its dependencies.
-    
-    .PARAMETER ExtensionConfig
-    A hashtable containing the initial extension metadata provided by the user. This parameter is mandatory.
-    
-    .OUTPUTS
-    The function returns an array of hashtables representing the processed extension metadata for the input extension and its dependencies.
-    
-    .EXAMPLE
-    $extensionConfig = @{
-        Name = "MyExtension"
-        Path = "C:\Extensions\MyExtension"
-        Repository = "https://example.com/extensions"
-    }
-    Register-ExtensionAndDependencies -ExtensionConfig $extensionConfig
-    
-    This example registers an extension with the specified configuration.
-    
-    .NOTES
-    This function requires the Resolve-ExtensionMetadata, Get-ExtensionFromRepository, Get-ExtensionDependencies, and Get-ExtensionAvailableTasks functions to be available in the current session.
+        .SYNOPSIS
+        Registers an extension and its dependencies.
+        
+        .DESCRIPTION
+        A recursive function responsible for registering the specified extension and its dependencies.
+        
+        .PARAMETER ExtensionConfig
+        A hashtable containing the initial extension metadata provided by the user. This parameter is mandatory.
+        
+        .INPUTS
+        None. You can't pipe objects to Register-ExtensionAndDependencies.
+
+        .OUTPUTS
+        The function returns an array of hashtables representing the processed extension metadata for the input extension and its dependencies.
+        
+        .EXAMPLE
+        PS:> $extensionConfig = @{
+            Name = "MyExtension"
+            Path = "C:\Extensions\MyExtension"
+            Repository = "https://example.com/extensions"
+        }
+        PS:>Register-ExtensionAndDependencies -ExtensionConfig $extensionConfig
     #>
     
     [CmdletBinding()]
@@ -66,7 +64,7 @@ function Register-ExtensionAndDependencies {
         Write-Verbose "Checking dependencies for $($extension.Name)"
         $extension.Add("dependencies", (Get-ExtensionDependencies -Extension $extension))
         Write-Verbose "Checking available tasks for $($extension.Name)"
-        $extension.Add("availableTasks", (Get-ExtensionAvailableTasks -Extension $extension))
+        $extension.Add("availableTasks", (Get-ExtensionAvailableTasks -ExtensionPath $extension.Path))
     }
 
     $processedExtensionConfig += $extension

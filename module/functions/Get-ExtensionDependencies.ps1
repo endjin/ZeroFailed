@@ -3,41 +3,54 @@
 # </copyright>
 function Get-ExtensionDependencies {
     <#
-    .SYNOPSIS
-    Retrieves the dependencies of a given extension by reading its `dependencies.psd1` file.
+        .SYNOPSIS
+        Retrieves the dependencies of a given extension by reading its `dependencies.psd1` file.
 
-    .DESCRIPTION
-    Retrieves the dependencies of a given extension by reading its `dependencies.psd1` file.
+        .DESCRIPTION
+        Retrieves the dependencies of a given extension by reading its `dependencies.psd1` file.
 
-    .PARAMETER Extension
-    The extension to resolve dependencies for.
+        .PARAMETER Extension
+        The metadata object for the extension we are resolving dependencies for.
 
-    .NOTES
-    By convention an extension must declare its dependencies in a `dependencies.psd1` file located alongside
-    it's PowerShell module manifest file.  The contents of this file can be in one of two formats:
-    
-    Short-hand syntax (single or multiple dependencies):
-    @(
-        'ExtensionA'
-    )
-    
-    Full syntax (single dependency):
-    @{
-        Name = 'ExtensionA'
-        Version = '1.0.0'
-    }
+        .INPUTS
+        None. You can't pipe objects to Get-ExtensionDependencies.
 
-    Full syntax (multiple dependencies):
-    @(
+        .OUTPUTS
+        hashtable[]
+
+        Returns the resolved extension metadata for each dependency of the specified extension.
+
+        .EXAMPLE
+        PS:> Get-ExtensionDependencies -Extension $extension
+        @{
+        }
+        
+        .NOTES
+        By convention an extension must declare its dependencies in a `dependencies.psd1` file located alongside
+        it's PowerShell module manifest file.  The contents of this file can be in one of two formats:
+        
+        Short-hand syntax (single or multiple dependencies):
+        @(
+            'ExtensionA'
+        )
+        
+        Full syntax (single dependency):
         @{
             Name = 'ExtensionA'
             Version = '1.0.0'
         }
-        @{
-            Name = 'ExtensionB'
-            Version = '2.0.0'
-        }
-    )
+
+        Full syntax (multiple dependencies):
+        @(
+            @{
+                Name = 'ExtensionA'
+                Version = '1.0.0'
+            }
+            @{
+                Name = 'ExtensionB'
+                Version = '2.0.0'
+            }
+        )
     #>
 
     [CmdletBinding()]

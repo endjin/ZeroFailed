@@ -29,6 +29,9 @@ $devopsExtensions = @(
 . endjin-devops.tasks
 
 # Set the required build options
+$PesterTestsDir = "$here/module"
+$PesterVersion = "5.5.0"
+
 $PowerShellModulesToPublish = @(
     @{
         ModulePath = "$here/module/endjin-devops.psd1"

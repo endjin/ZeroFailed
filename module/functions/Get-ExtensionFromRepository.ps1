@@ -3,40 +3,42 @@
 # </copyright>
 function Get-ExtensionFromRepository {
     <#
-    .SYNOPSIS
+        .SYNOPSIS
         Retrieves an extension from a PowerShell module repository.
-    
-    .DESCRIPTION
+        
+        .DESCRIPTION
         If not already available as a locally-installed module, this function installs the extension (as PowerShell module) from a specified repository.
         It also derives the additional metadata about the extension required by the tooling.
-    
-    .PARAMETER Name
+        
+        .PARAMETER Name
         Specifies the module name of the extension to retrieve.
-    
-    .PARAMETER Repository
+        
+        .PARAMETER Repository
         Specifies the PowerShell module repository from which to retrieve the extension.
-    
-    .PARAMETER Version
+        
+        .PARAMETER Version
         Specifies the version of the extension to retrieve. If not specified, the latest version will be retrieved.
-    
-    .PARAMETER PreRelease
+        
+        .PARAMETER PreRelease
         Indicates whether to consider pre-release versions of the module when checking for existing and installing new versions.
-    
-    .OUTPUTS
-        System.Collections.Hashtable
+        
+        .INPUTS
+        None. You can't pipe objects to Get-ExtensionFromRepository.
+
+        .OUTPUTS
+        Hashtable.
+        
         Returns a hashtable containing completed set of metadata for the extension. This consists of the originally supplied metadata
         plus these additional propeties:
         - Path: The path to the installed extension.
         - Enabled: Indicates whether the extension is enabled.
-    
-    .EXAMPLE
-        Get-ExtensionFromRepository -Name "MyExtension" -Version "1.0.0"`
+        
+        .EXAMPLE
+        PS:> Get-ExtensionFromRepository -Name "MyExtension" -Version "1.0.0"`
         Retrieves version 1.0 of the "MyExtension" extension from the default repository (e.g. PSGallery).
-    
-    .NOTES
-        This function requires the Find-PSResource and Install-PSResource functions to be available in the current session.
     #>
     
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
         [string] $Name,
