@@ -44,7 +44,7 @@ else {
 ($registeredExtensions | Group-Object -Property Name) |
     Where-Object { $_.Count -gt 1 } |
     ForEach-Object {
-        Write-Warning "Multiple versions of extension '$($_.Name)' have been resolved - removing duplicates, will use the first one found: $($_.Group[0] | ConvertTo-Json)"
+        Write-Warning "Multiple versions of extension '$($_.Name)' have been resolved - removing duplicates, will use the first one found: $($_.Group[0] | Select-Object Name,Version,Path | ConvertTo-Json)"
     }
 $registeredExtensions = $registeredExtensions |
                             Group-Object -Property Name |
@@ -63,9 +63,13 @@ $registeredExtensions = $registeredExtensions |
 # 1) Check whether an extension has been declared as providing it via the 'Process' property
 #    NOTE: For the moment, the first one found wins
 # 2) If not, fallback to using the core process defined in this module
-$processFromExtension = $registeredExtensions |
-                            Where-Object { $_.ContainsKey("Process") } |
-                            Select-Object -First 1
+[array]$processesFromExtension = $registeredExtensions |
+                            Where-Object { $_.ContainsKey("Process") }
+if ($processesFromExtension.Count -gt 1) {
+    Write-Warning "Multiple extensions have declared a process definition, will use the first one found: $($processesFromExtension[0] | Select-Object Name,Version,Path,Process | ConvertTo-Json)"
+}
+
+$processFromExtension = $processesFromExtension | Select-Object -First 1
 if ($processFromExtension) {
     $processPath = Join-Path $processFromExtension.Path $processFromExtension.Process
     Write-Host "Using process from extension '$($processFromExtension.Name)'" -f Green
@@ -94,7 +98,7 @@ foreach ($extension in $registeredExtensions) {
     }
 
     # Import tasks
-    Write-Host "Importing tasks"
+    Write-Host "- Importing tasks"
     $tasksDir = Join-Path $extension.Path "tasks"
     $tasksToImport = Import-TasksFromExtension -TasksPath $tasksDir
     if (!($tasksToImport)) {
@@ -108,7 +112,7 @@ foreach ($extension in $registeredExtensions) {
     }
 
     # Import functions
-    Write-Host "Importing functions"
+    Write-Host "- Importing functions"
     $functionsDir = Join-Path $extension.Path "functions"
     $functionsToImport = Import-FunctionsFromExtension -FunctionsPath $functionsDir
     $functionsToImport | ForEach-Object {
@@ -116,5 +120,5 @@ foreach ($extension in $registeredExtensions) {
         . $_
     }
 
-    Write-Host "*** Extensions registration complete`n" -f Green
 }
+Write-Host "*** Extensions registration complete`n" -f Green
