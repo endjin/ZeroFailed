@@ -20,15 +20,7 @@ function Resolve-ExtensionMetadata {
         if ($Value -imatch $regex) {
             # Handle the Simple syntax referencing a file path to the module
             $extension.Add("Path", $Value)
-            # Locate the module manifest to derive the module name.  We need this name 
-            # to be accurate to ensure our duplicate extension detection works correctly.
-            $moduleManifestPaths = Get-ChildItem -Path $Value -Filter "*.psd1" | Where-Object { $_.BaseName -ne "dependencies" }
-            $moduleManifestPath = $moduleManifestPaths | Select-Object -First 1
-            if ($moduleManifestPath.Count -gt 1) {
-                Write-Warning "Found multiple module manifest files in '$Value' - using the first one found ($moduleManifestPath.BaseName)"
-            }
-            $extension.Add("Name", $moduleManifestPath.BaseName)
-        }   
+        }
         else {
             # Simple syntax referencing a module name
             $extension.Add("Name", $Value)
@@ -40,6 +32,12 @@ function Resolve-ExtensionMetadata {
     }
     else {
         throw "Invalid extension configuration syntax. Expected a string or hashtable, but found $($Value.GetType().Name)"
+    }
+
+    # Ensure we have the module name, as this is needed to ensure our duplicate extension detection works correctly
+    # We can be missing this when the extension is specified as a path using either the simple or object syntax.
+    if (!$extension.ContainsKey("Name")) {
+        $extension.Add("Name", (_resolveModuleNameFromPath $extension.Path))
     }
 
     Write-Verbose "Resolved extension metadata: $($extension | ConvertTo-Json)"
