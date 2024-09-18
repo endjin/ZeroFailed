@@ -47,3 +47,7 @@ For example:
 ├── MyExtension.psd1
 └── MyExtension.psm1
 ```
+
+The diagram below provides an overview of how the automated process interacts with the extensibility framework & InvokeBuild when it is executed.
+
+![Extensibility Overview](./docs/assets/extensibility.png)
