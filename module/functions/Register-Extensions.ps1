@@ -99,7 +99,7 @@ function Register-Extensions {
     # Extensions will be installed under the ZfPath, which by convention
     # is the '.zf' folder in the root of a project.
     $zfExtensionsPath = Join-Path $ZfPath 'extensions'
-    if (!(Test-Path $ZfPath)) {
+    if (!(Test-Path $zfExtensionsPath)) {
         New-Item -ItemType Directory $zfExtensionsPath | Out-Null
     }
     Write-Host "ZF Extensions Path: $zfExtensionsPath"
