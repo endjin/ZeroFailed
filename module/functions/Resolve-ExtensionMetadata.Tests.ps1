@@ -2,6 +2,14 @@
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
 
+BeforeAll {
+    # sut
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+
+    # in-module dependencies
+    . (Join-Path (Split-Path -Parent $PSCommandPath) '_resolveModuleNameFromPath.ps1')
+}
+
 Describe 'Resolve-ExtensionMetadata' {
     BeforeAll {
         # Setup mock extension on filesystem

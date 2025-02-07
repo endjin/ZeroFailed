@@ -2,6 +2,11 @@
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
 
+BeforeAll {
+    # sut
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+}
+
 Describe 'Get-InstalledExtensionDetails' {
     # Setup TestDrive with sample extension definitions
     BeforeAll {

@@ -2,6 +2,14 @@
 # Copyright (c) Endjin Limited. All rights reserved.
 # </copyright>
 
+BeforeAll {
+    # sut
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+
+    # in-module dependencies
+    . (Join-Path (Split-Path -Parent $PSCommandPath) 'Get-InstalledExtensionDetails.ps1')
+}
+
 Describe 'Get-ExtensionFromRepository' {
     # Setup TestDrive with sample extension definitions
     BeforeAll {
@@ -73,7 +81,16 @@ Describe 'Get-ExtensionFromRepository' {
         BeforeAll {
             Mock Save-Module {}
             $name = 'AlreadyInstalledExtension'
-            New-Item -Path (Join-Path $targetPath $name "1.0.0") -ItemType Directory -Force | Out-Null
+            $mockExtensionManifest = @"
+@{
+    PrivateData = @{
+        PSData = @{
+            Prerelease = ''
+        }
+    }
+}
+"@
+            New-Item -Path (Join-Path $targetPath $name "1.0.0" "AlreadyInstalledExtension.psd1") -ItemType File -Value $mockExtensionManifest -Force | Out-Null
             $result = Get-ExtensionFromRepository -Name $name -TargetPath $targetPath -Repository PSGallery
         }
 
